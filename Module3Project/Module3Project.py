@@ -3,8 +3,9 @@
 # Date: 1/29/2025
 
 # Store our ice cream shop's menu items
-flavors = ["vanilla", "caramel", "mint"]
+flavors = ["vanilla", "caramel", "mint", "chocolate", "matcha", "coffee"]
 toppings = ["sprinkles", "nuts", "cherry"]
+cones = ["sugar", "cake", "waffle"]
 prices = {
     "scoop": 2.50,
     "topping": 0.50
@@ -23,6 +24,10 @@ def display_menu():
     print("\nAvailable Toppings:")
     for topping in toppings:
         print(f" - {topping}")
+
+    print("\nAvailable Cones:")
+    for cone in cones:
+        print(f" - {cone} cone")
 
     # Display the prices
     print("\nPrices")
@@ -77,18 +82,37 @@ def get_toppings():
             chosen_toppings.append(topping)
             print(f"Added {topping}!")
         else:
-            print("Sorry, that toppping isnt available.")
+            print("Sorry, that toppping isn't available.")
         
     # Return the list of toppings that the user chose
     return chosen_toppings
+
+def get_cone():
+    """Gets cone choice from customer"""
+    chosen_cone = ''
+
+    while True:
+        cone = input("\nEnter what cone you would like: ").lower()
+        if cone in cones:
+            chosen_cone = cone
+            break
+        else:
+            print("Sorry, that cone isn't avaiable")
+
+    return chosen_cone
 
 def calculate_total(num_scoops, num_toppings):
     """Calculates the total cost of the order"""
     scoop_cost = num_scoops * prices["scoop"]
     topping_cost = num_toppings * prices["topping"]
-    return scoop_cost + topping_cost
+    total = scoop_cost + topping_cost
+    # Calculates if order is over 10$. If it is, it adds a 10% discount
+    if (total > 10.0) :
+        total = total * 0.9
+    
+    return total
 
-def print_receipt(num_scoops, chosen_flavors, chosen_toppings):
+def print_receipt(num_scoops, chosen_flavors, chosen_toppings, chosen_cone):
     """Prints a nice receipt for the customer"""
     print("\n=== Your Ice Cream Order ===")
     for i in range(num_scoops):
@@ -99,6 +123,8 @@ def print_receipt(num_scoops, chosen_flavors, chosen_toppings):
             # Loop through the list of toppings
             for topping in chosen_toppings:
                 print(f" - {topping.title()}")
+        
+        print(f"Cone: {chosen_cone.title()} Cone")
 
         #Print the total
         total = calculate_total(num_scoops, len(chosen_toppings))
@@ -117,7 +143,8 @@ def main():
     # Call the get toppings function which returns the list of toppings
     chosen_toppings = get_toppings()
     # Display the receipt
-    print_receipt(num_scoops, chosen_flavors, chosen_toppings)
+    chosen_cone = get_cone()
+    print_receipt(num_scoops, chosen_flavors, chosen_toppings, chosen_cone)
 
 
 if __name__ == "__main__":
